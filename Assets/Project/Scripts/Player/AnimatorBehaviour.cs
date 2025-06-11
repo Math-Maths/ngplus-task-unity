@@ -14,4 +14,9 @@ public class AnimatorBehabiour : MonoBehaviour
         animator.SetFloat("Speed", speed);
         animator.SetBool("Sprinting", sprinting);
     }
+
+    public void HandleObject(bool state)
+    {
+        animator.SetBool("Carrying", state);
+    }
 }

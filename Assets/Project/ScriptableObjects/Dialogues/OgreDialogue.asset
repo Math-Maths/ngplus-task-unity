@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78aec109653715741a9544356af69d03, type: 3}
+  m_Name: OgreDialogue
+  m_EditorClassIdentifier: 
+  lines:
+  - Sup!
+  - What a stink human are doing here?
+  - Are you trying to get eaten? I can help with that!
+  - Just kidding! I'm on diet.
+  - So it seens you wanna use my gate.
+  - Let's help each other. You bring me some gold coins.
+  - You'll also need to find a crystal.
+  - I don't know where I let that thing.
+  - Just put it over there and the gate will work.

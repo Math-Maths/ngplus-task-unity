@@ -23,7 +23,7 @@ public class InventorySystem : MonoBehaviour
 
     public bool AddItem(InventoryItem item, int quantity = 1)
     {
-        // 1. Verifica se é empilhável e já está presente
+        //Verify if the item is stackable
         for (int i = 0; i < slots.Length; i++)
         {
             if (!slots[i].IsEmpty && slots[i].item == item && item.isStackable)
@@ -34,7 +34,7 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        // 2. Coloca em um novo slot vazio
+        //Add the item to a empty slot
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].IsEmpty)
@@ -46,7 +46,7 @@ public class InventorySystem : MonoBehaviour
             }
         }
 
-        Debug.Log("Inventário cheio!");
+        Debug.Log("Inventory is full");
         return false;
     }
 

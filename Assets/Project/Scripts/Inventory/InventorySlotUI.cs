@@ -4,14 +4,20 @@ using TMPro;
 
 public class InventorySlotUI : MonoBehaviour
 {
-    public Image iconImage;
-    public TMP_Text quantityText;
-    public Button button;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TMP_Text quantityText;
+    [SerializeField] private GameObject slotOption;
+    [SerializeField] private TMP_Text equipUse;
 
+    private Button button;
     private int index;
+    private Image slotImage;
 
     public void Init(int i)
     {
+        slotImage = GetComponent<Image>();
+        button = GetComponent<Button>();
+
         index = i;
         button.onClick.AddListener(OnClick);
         UpdateUI();
@@ -23,15 +29,27 @@ public class InventorySlotUI : MonoBehaviour
 
         if (slot.IsEmpty)
         {
-            iconImage.enabled = false;
-            quantityText.text = "";
+            DesactivateSlot();
         }
         else
         {
-            iconImage.enabled = true;
-            iconImage.sprite = slot.item.icon;
-            quantityText.text = slot.item.isStackable ? slot.quantity.ToString() : "";
+            ActivateSlot(slot);
         }
+    }
+
+    private void DesactivateSlot()
+    {
+        slotImage.color = new Color(0f, 0f, 75f, 75f);
+        iconImage.enabled = false;
+        quantityText.text = "";
+    }
+
+    private void ActivateSlot(InventorySlot slot)
+    {
+        slotImage.color = Color.white;
+        iconImage.enabled = true;
+        iconImage.sprite = slot.item.icon;
+        quantityText.text = slot.item.isStackable ? slot.quantity.ToString() : "";
     }
 
     private void OnClick()
@@ -39,13 +57,9 @@ public class InventorySlotUI : MonoBehaviour
         InventorySlot slot = InventorySystem.Instance.GetSlot(index);
         if (!slot.IsEmpty)
         {
-            Debug.Log("Usando item: " + slot.item.itemName);
+            equipUse.text = slot.item.itemType == ItemType.Consumable ? "use" : "equip";
 
-            // Aqui podemos aplicar o efeito (ex: curar)
-            if (slot.item.itemType == ItemType.Consumable)
-            {
-                InventorySystem.Instance.RemoveItem(index);
-            }
+            slotOption.SetActive(true);
         }
     }
 }

@@ -8,7 +8,6 @@ public enum ItemType
     Equipment
 }
 
-[CreateAssetMenu(menuName = "Inventory/Item")]
 public abstract class InventoryItem : ScriptableObject
 {
     public string itemName;
@@ -16,4 +15,6 @@ public abstract class InventoryItem : ScriptableObject
     public ItemType itemType;
     public bool isStackable;
     public int maxStack = 1;
+
+    public abstract void Use(PlayerInventory playerInventory);
 }

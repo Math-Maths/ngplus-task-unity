@@ -13,4 +13,20 @@ public class InventorySlot
         item = null;
         quantity = 0;
     }
+
+    public void ReduceAmount()
+    {
+        if (quantity == 1)
+        {
+            Clear();
+        }
+        else if (quantity > 1)
+        {
+            quantity -= 1;
+        }
+        else
+        {
+            Clear();
+        }
+    }
 }

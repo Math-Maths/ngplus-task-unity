@@ -9,7 +9,7 @@ public enum ItemType
 }
 
 [CreateAssetMenu(menuName = "Inventory/Item")]
-public class InventoryItem : ScriptableObject
+public abstract class InventoryItem : ScriptableObject
 {
     public string itemName;
     public Sprite icon;

@@ -10,7 +10,9 @@ public class InventorySystem : MonoBehaviour
     public InventorySlot[] slots;
 
     [SerializeField] private int slotCount = 20;
-    
+    [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private GameObject interactText;
+
 
     private void Awake()
     {
@@ -19,6 +21,8 @@ public class InventorySystem : MonoBehaviour
         slots = new InventorySlot[slotCount];
         for (int i = 0; i < slotCount; i++)
             slots[i] = new InventorySlot();
+
+        interactText.SetActive(false);
     }
 
     public bool AddItem(InventoryItem item, int quantity = 1)
@@ -68,4 +72,58 @@ public class InventorySystem : MonoBehaviour
     {
         return slots[index];
     }
+
+    public void UpdateInventory()
+    {
+        OnInventoryChanged?.Invoke();
+    }
+
+
+    public void ToggleInventory()
+    {
+        if (inventoryPanel.activeSelf)
+        {
+            inventoryPanel.SetActive(false);
+        }
+        else
+        {
+            inventoryPanel.SetActive(true);
+            OnInventoryChanged?.Invoke();
+        }
+    }
+
+    public void MoveItem(int from, int to)
+    {
+        if (from < 0 || to < 0 || from >= slots.Length || to >= slots.Length)
+            return;
+
+        InventorySlot source = slots[from];
+        InventorySlot target = slots[to];
+
+        if (source.IsEmpty)
+            return;
+
+        // Mesma stackável → somar
+        if (!target.IsEmpty && target.item == source.item && source.item.isStackable)
+        {
+            target.quantity += source.quantity;
+            source.Clear();
+        }
+        else // trocar
+        {
+            var tempItem = target.item;
+            var tempQty = target.quantity;
+
+            target.Set(source.item, source.quantity);
+            source.Set(tempItem, tempQty);
+        }
+
+        OnInventoryChanged?.Invoke();
+    }
+
+    public void ShowInteractText(bool state)
+    {
+        interactText.SetActive(state);
+    }
+
 }

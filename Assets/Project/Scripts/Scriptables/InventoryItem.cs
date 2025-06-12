@@ -3,7 +3,6 @@ using UnityEngine;
 public enum ItemType
 {
     Generic,
-    QuestItem,
     Consumable,
     Equipment
 }
@@ -15,6 +14,8 @@ public abstract class InventoryItem : ScriptableObject
     public ItemType itemType;
     public bool isStackable;
     public int maxStack = 1;
+    public GameObject prefab;
+    public string id;
 
     public abstract void Use(PlayerInventory playerInventory);
 }

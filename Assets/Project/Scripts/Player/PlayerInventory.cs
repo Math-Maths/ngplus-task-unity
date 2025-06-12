@@ -8,14 +8,14 @@ public class PlayerInventory : MonoBehaviour
 
     public void Equip(EquipableItem item)
     {
-        // Destroi item anterior, se houver
+        //Destroy the previous item
         if (equippedItemInstance != null)
             Destroy(equippedItemInstance);
 
-        // Instancia o novo objeto na mão
+        //Instantiate a new item
         if (item.prefab != null)
         {
-            equippedItemInstance = Instantiate(item.prefab, rightHandSlot);
+            equippedItemInstance = Instantiate(item.handPrefab, rightHandSlot);
             equippedItemInstance.transform.localPosition = Vector3.zero;
             equippedItemInstance.transform.localRotation = Quaternion.identity;
 

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] private AnimatorBehabiour animator;
     [SerializeField] private Transform carryPlaceHolder;
+    [SerializeField] private GameObject runParticles;
 
     private InputSystem_Actions inputActions;
     private Vector2 moveInput;
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
         inputActions.Player.Interact.performed += OnInteract;
 
+        inputActions.Player.Inventory.performed += OpenInventory;
+
         DialogueEvents.OnDialogueStarted += DisableMovement;
         DialogueEvents.OnDialogueEnded += EnableMovement;
     }
@@ -56,6 +59,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Sprint.canceled -= ctx => isSprinting = false;
 
         inputActions.Player.Interact.performed -= OnInteract;
+
+        inputActions.Player.Inventory.performed -= OpenInventory;
 
         inputActions.Player.Disable();
 
@@ -82,9 +87,11 @@ public class PlayerController : MonoBehaviour
         if (move != Vector3.zero)
         {
             transform.forward = move;
+            runParticles.SetActive(isSprinting);
         }
         else
         {
+            runParticles.SetActive(false);
             speed = 0f;
         }
 
@@ -132,12 +139,19 @@ public class PlayerController : MonoBehaviour
                 break;
             case InteractableType.NPC:
                 animator.SetMovment(0, false);
+                transform.LookAt(obj.transform, transform.up);
                 //Debug.Log("Let's Talk");
                 break;
             case InteractableType.Collectable:
-                Debug.Log("Open it");
+                Debug.Log("Take it");
                 break;
         }
+    }
+
+    private void OpenInventory(InputAction.CallbackContext context)
+    {
+        InventorySystem.Instance.ToggleInventory();
+        Debug.Log("click");
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)

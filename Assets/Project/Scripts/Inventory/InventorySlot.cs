@@ -1,10 +1,9 @@
-using UnityEngine;
-
 [System.Serializable]
 public class InventorySlot
 {
     public InventoryItem item;
     public int quantity;
+    public string id;
 
     public bool IsEmpty => item == null;
 
@@ -14,19 +13,22 @@ public class InventorySlot
         quantity = 0;
     }
 
-    public void ReduceAmount()
+    public void ReduceAmount(int amount = 1)
     {
-        if (quantity == 1)
+        quantity -= amount;
+        if (quantity <= 0)
         {
             Clear();
         }
-        else if (quantity > 1)
-        {
-            quantity -= 1;
-        }
-        else
-        {
-            Clear();
-        }
+
+        InventorySystem.Instance.UpdateInventory();
+    }
+
+    public void Set(InventoryItem newItem, int newQuantity)
+    {
+        item = newItem;
+        quantity = newQuantity;
+
+        InventorySystem.Instance.UpdateInventory();
     }
 }

@@ -6,9 +6,19 @@ public class InteractableNPC : MonoBehaviour, IInteractable
     [SerializeField] private DialogueData dialogue;
     [SerializeField] string characterName;
 
+    private Outline highlight;
+
+    private void Start()
+    {
+        highlight = GetComponent<Outline>();
+        highlight.enabled = false;
+    }
+
     public GameObject Interact(GameObject interactor)
     {
         DialogueUI.Instance.StartDialogue(dialogue, characterName);
+
+        transform.LookAt(interactor.transform, transform.up);
 
         return gameObject;
     }
@@ -16,5 +26,10 @@ public class InteractableNPC : MonoBehaviour, IInteractable
     public InteractableType GetInteractableType()
     {
         return type;
+    }
+
+    public void HighLight(bool state)
+    {
+        highlight.enabled = state;
     }
 }

@@ -11,5 +11,5 @@ public enum InteractableType
 {
     Item,
     NPC,
-    Door
+    Collectable
 }

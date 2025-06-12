@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
                 animator.SetMovment(0, false);
                 //Debug.Log("Let's Talk");
                 break;
-            case InteractableType.Door:
+            case InteractableType.Collectable:
                 Debug.Log("Open it");
                 break;
         }

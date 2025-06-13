@@ -136,7 +136,6 @@ public class PlayerController : MonoBehaviour
         switch (type)
         {
             case InteractableType.Item:
-                Debug.Log("You got an item");
                 carryingObj = obj.GetComponent<InteractableItem>();
                 carryingObj.transform.parent = carryPlaceHolder;
                 carryingObj.transform.position = carryPlaceHolder.position;
@@ -149,7 +148,6 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("Let's Talk");
                 break;
             case InteractableType.Collectable:
-                Debug.Log("Take it");
                 break;
         }
     }

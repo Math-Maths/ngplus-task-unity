@@ -8,6 +8,7 @@ public class InteractableNPC : MonoBehaviour, IInteractable
     [SerializeField] private string characterName;
     [SerializeField] private int requiredCoins = 5;
     [SerializeField] private DialogueData finalDialogue;
+    [SerializeField] private DoorController door;
 
     private Outline highlight;
     private int dialoguesCount = 1;
@@ -59,6 +60,7 @@ public class InteractableNPC : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(.1f);
         DialogueUI.Instance.StartDialogue(finalDialogue, characterName);
         canInteract = false;
+        door.OpenDoor();
     }
 
      private bool HasEnoughCoins()

@@ -50,6 +50,11 @@ public class InteractableItem : MonoBehaviour, IInteractable
         return type;
     }
 
+    public void ChangeInteraction(bool state)
+    {
+        canInteract = state;
+    }
+
     public bool CanInteract() => canInteract;
 
     public void HighLight(bool state)

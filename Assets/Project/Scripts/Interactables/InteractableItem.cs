@@ -34,6 +34,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
         }
         //Debug.Log($"{gameObject.name} foi pego por {interactor.name}");
         GetComponent<FloatingItem>()?.PauseRotationAndFloat();
+        highlight.enabled = false;
 
         return gameObject;
     }

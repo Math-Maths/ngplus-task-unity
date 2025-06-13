@@ -20,6 +20,8 @@ public class InteractableNPC : MonoBehaviour, IInteractable
 
         transform.LookAt(interactor.transform, transform.up);
 
+        highlight.enabled = false;
+
         return gameObject;
     }
 

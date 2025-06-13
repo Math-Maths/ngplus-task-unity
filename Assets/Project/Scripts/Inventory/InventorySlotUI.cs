@@ -11,6 +11,7 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     [SerializeField] private GameObject slotOption;
     [SerializeField] private TMP_Text equipUse;
     [SerializeField] private PlayerInventory playerInventory;
+    [SerializeField] private GameObject useEquipeButton;
 
     private Button button;
     private int index;
@@ -51,8 +52,17 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
         if (!slot.IsEmpty && !slotOption.activeSelf)
         {
-            equipUse.text = slot.item.itemType == ItemType.Consumable ? "use" : "equip";
-            slotOption.SetActive(true);
+            if (slot.item.itemType == ItemType.Generic)
+            {
+                useEquipeButton.SetActive(false);
+                slotOption.SetActive(true);
+            }
+            else
+            {
+                useEquipeButton.SetActive(true);
+                equipUse.text = slot.item.itemType == ItemType.Consumable ? "use" : "equip";
+                slotOption.SetActive(true);
+            }
         }
         else if (slotOption.activeSelf)
         {
@@ -93,6 +103,9 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnBeginDrag(PointerEventData eventData)
     {
         InventorySlot slot = InventorySystem.Instance.GetSlot(index);
+
+        slotOption.SetActive(false);
+
         if (!slot.IsEmpty)
         {
             InventoryDragHandler.Instance.StartDrag(slot.item.icon, index);
@@ -111,6 +124,8 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
 
     public void OnDrop(PointerEventData eventData)
     {
+
+        slotOption.SetActive(false);
         if (!InventoryDragHandler.Instance.IsDragging)
             return;
 

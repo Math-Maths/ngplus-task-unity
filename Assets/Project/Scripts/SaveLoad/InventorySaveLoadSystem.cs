@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 public class InventorySaveLoadSystem : MonoBehaviour
 {
@@ -12,34 +13,33 @@ public class InventorySaveLoadSystem : MonoBehaviour
 
         foreach (var slot in InventorySystem.Instance.slots)
         {
-            if (!slot.IsEmpty)
+            data.slots.Add(new InventorySlotData
             {
-                data.slots.Add(new InventorySlotData
-                {
-                    itemID = slot.item.id,
-                    quantity = slot.quantity
-                });
-            }
-            else
+                itemID = slot.IsEmpty ? "" : slot.item.id,
+                quantity = slot.IsEmpty ? 0 : slot.quantity
+            });
+        }
+
+        INPCSavable[] npcSlots = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<INPCSavable>().ToArray();
+        foreach (var npc in npcSlots)
+        {
+            data.npcData.Add(new NPCData
             {
-                data.slots.Add(new InventorySlotData
-                {
-                    itemID = "",
-                    quantity = 0
-                });
-            }
+                npcId = npc.NPCId,
+                coinsDelivered = npc.GetCurrentAmount()
+            });
         }
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
-        Debug.Log("Inventory path " + savePath);
+        Debug.Log("Inventory saved.");
     }
 
     public void LoadInventory()
     {
         if (!File.Exists(savePath))
         {
-            Debug.Log("No file found.");
+            Debug.Log("No save file found.");
             return;
         }
 
@@ -48,32 +48,35 @@ public class InventorySaveLoadSystem : MonoBehaviour
 
         for (int i = 0; i < InventorySystem.Instance.slots.Length; i++)
         {
-            InventorySlotData slotData = data.slots[i];
-
+            var slotData = data.slots[i];
             if (string.IsNullOrEmpty(slotData.itemID))
-            {
                 InventorySystem.Instance.slots[i].Clear();
-            }
             else
             {
-                InventoryItem item = ItemDatabase.Instance.GetItemByID(slotData.itemID);
+                var item = ItemDatabase.Instance.GetItemByID(slotData.itemID);
                 InventorySystem.Instance.slots[i].item = item;
                 InventorySystem.Instance.slots[i].quantity = slotData.quantity;
             }
         }
 
         InventorySystem.Instance.UpdateInventory();
-        Debug.Log("Inventory Loaded.");
+
+        INPCSavable[] npcSlots = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<INPCSavable>().ToArray();
+        foreach (var npc in npcSlots)
+        {
+            var found = data.npcData.Find(d => d.npcId == npc.NPCId);
+            if (found != null)
+                npc.SetCurrentAmount(found.coinsDelivered);
+        }
+
+        Debug.Log("Inventory and NPCs Loaded.");
     }
 
     private void Update()
-{
-    if (Input.GetKeyDown(KeyCode.F5))
-        SaveInventory();
-
-    if (Input.GetKeyDown(KeyCode.F9))
-        LoadInventory();
-}
+    {
+        if (Input.GetKeyDown(KeyCode.F5)) SaveInventory();
+        if (Input.GetKeyDown(KeyCode.F9)) LoadInventory();
+    }
 }
 
 [System.Serializable]
@@ -84,9 +87,17 @@ public class InventorySlotData
 }
 
 [System.Serializable]
+public class NPCData
+{
+    public string npcId;
+    public int coinsDelivered;
+}
+
+[System.Serializable]
 public class InventorySaveData
 {
     public List<InventorySlotData> slots = new List<InventorySlotData>();
+    public List<NPCData> npcData = new List<NPCData>();
 }
 
 

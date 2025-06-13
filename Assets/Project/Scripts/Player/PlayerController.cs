@@ -127,6 +127,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInteraction(InteractableType type, GameObject obj)
     {
+
+        InventorySystem.Instance.ShowInteractText(false);
+
         switch (type)
         {
             case InteractableType.Item:

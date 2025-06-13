@@ -6,6 +6,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
     [SerializeField] int quantity;
 
     private Outline highlight;
+    private bool canInteract = true;
 
     public InteractableType type;
 
@@ -48,6 +49,8 @@ public class InteractableItem : MonoBehaviour, IInteractable
     {
         return type;
     }
+
+    public bool CanInteract() => canInteract;
 
     public void HighLight(bool state)
     {

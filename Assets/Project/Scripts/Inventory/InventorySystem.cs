@@ -92,6 +92,11 @@ public class InventorySystem : MonoBehaviour
         }
     }
 
+    public void ToggleInventory(bool state)
+    {
+        inventoryPanel.SetActive(state);
+    }
+
     public void MoveItem(int from, int to)
     {
         if (from < 0 || to < 0 || from >= slots.Length || to >= slots.Length)

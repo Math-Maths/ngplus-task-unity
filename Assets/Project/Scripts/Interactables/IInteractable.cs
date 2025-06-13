@@ -7,6 +7,8 @@ public interface IInteractable
     public GameObject Interact(GameObject interactor);
 
     public void HighLight(bool state);
+
+    public bool CanInteract();
 }
 
 public enum InteractableType

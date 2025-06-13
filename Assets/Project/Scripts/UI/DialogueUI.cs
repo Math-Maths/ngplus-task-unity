@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Collections;
+using System;
 
 public class DialogueUI : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class DialogueUI : MonoBehaviour
 
     [Header("Typing Settings")]
     [SerializeField] private float typingSpeed = 0.05f;
+
+    public event Action OnDialougueEnd;
 
     private DialogueData currentDialogue;
     private int currentLineIndex = 0;
@@ -52,7 +55,6 @@ public class DialogueUI : MonoBehaviour
 
         if (isTyping)
         {
-            // Termina a digitação e mostra a linha completa
             StopCoroutine(typingCoroutine);
             dialogueText.text = currentDialogue.lines[currentLineIndex - 1];
             isTyping = false;
@@ -93,6 +95,7 @@ public class DialogueUI : MonoBehaviour
 
     private void EndDialogue()
     {
+        OnDialougueEnd?.Invoke();
         dialoguePanel.SetActive(false);
         DialogueEvents.RaiseDialogueEnded();
         currentDialogue = null;

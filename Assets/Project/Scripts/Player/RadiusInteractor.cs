@@ -6,17 +6,24 @@ public class RadiusInteractor : MonoBehaviour
     {
         if (other.TryGetComponent<IInteractable>(out var interactable))
         {
-            interactable.HighLight(true);
-            InventorySystem.Instance.ShowInteractText(true);
+            if (interactable.CanInteract())
+            {
+                interactable.HighLight(true);
+                InventorySystem.Instance.ShowInteractText(true);
+            }
         }
     }
 
     void OnTriggerExit(Collider other)
     {
+        
         if (other.TryGetComponent<IInteractable>(out var interactable))
         {
-            interactable.HighLight(false);
-            InventorySystem.Instance.ShowInteractText(false);
+            if (interactable.CanInteract())
+            {
+                interactable.HighLight(false);
+                InventorySystem.Instance.ShowInteractText(false);
+            }
         }
     }
 }

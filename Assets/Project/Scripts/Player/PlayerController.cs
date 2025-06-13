@@ -111,8 +111,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    HandleInteraction(interactable.GetInteractableType(), interactable.Interact(gameObject));
-                    break; //Interact with the first found
+                    if (interactable.CanInteract())
+                    {
+                        HandleInteraction(interactable.GetInteractableType(), interactable.Interact(gameObject));
+                        break; //Interact with the first found
+                    }
                 }
             }
         }
@@ -154,7 +157,6 @@ public class PlayerController : MonoBehaviour
     private void OpenInventory(InputAction.CallbackContext context)
     {
         InventorySystem.Instance.ToggleInventory();
-        Debug.Log("click");
     }
 
     private void OnMovePerformed(InputAction.CallbackContext context)

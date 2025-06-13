@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78aec109653715741a9544356af69d03, type: 3}
-  m_Name: OgreDialogue
+  m_Name: OgreDialogue_1
   m_EditorClassIdentifier: 
   lines:
   - Sup!
